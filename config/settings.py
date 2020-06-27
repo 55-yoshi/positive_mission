@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mission.apps.MissionConfig',
     'user.apps.UserConfig',
-    'exp.apps.ExpConfig'
+    'exp.apps.ExpConfig',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +57,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,3 +121,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# ログインが必要なページに認証していないユーザーがアクセスした場合にリダイレクトするURLを指定
+LOGIN_URL = 'login'
+
+# ログイン後にリダイレクトされるURLを指定
+LOGIN_REDIRECT_URL = 'expmain'
+
+# ログアウト後にリダイレクトされるURLを指定
+LOGOUT_REDIRECT_URL = 'login'

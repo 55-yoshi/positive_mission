@@ -1,0 +1,51 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+
+<a href="{% url 'expmain' %}">UserPage</a>
+<a>&emsp;</a>
+
+{% if user.is_authenticated %}
+<h1>
+    <!--
+    {{ profile.user.username }}さん、Mission一覧はこちらです。
+    -->
+    <!-- (Higa) ログイン中のユーザー名を取得 -->
+    {{ user.username }}さん、Mission一覧はこちらです。
+</h1>
+{% endif %}
+
+<div>
+
+    <form action="{% url 'mission-create' %}">
+        <button type="submit">New Mission</button>
+    </form>
+
+    {% for mission in missions %}
+    <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
+    <ul>
+        <li>依頼者:{{ mission.author }}</li>
+        <li>内容：{{ mission.content }}</li>
+        <li>時間：{{ mission.date_posted }}</li>
+        <li>獲得EXP：{{ mission.success_exp }}</li>
+        <li>現在いいね数：{{ mission.good_count }}</li>
+        <li>参加者数：{{ mission.participants }}</li>
+    </ul>
+    <hr>
+    {% endfor %}
+
+    
+    {% if page_obj.has_previous %}
+        <a href="{% url 'mission-home' %}">&laquo;first</a>
+        <a href="?page={{page_obj.previous_page_number}}">&laquo;prev</a>
+    {% endif %}
+        <span>[ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ]</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number}}">next&raquo;</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a>
+    {% endif %}
+        
+    
+</div>
+
+{% endblock body %}

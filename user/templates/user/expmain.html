@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>expアプリ</title>
+</head>
+
+<body>
+
+    <a href="{% url 'expmain' %}">exp Main</a>
+    <a>&emsp;</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">Log Out</a>
+    <a>&emsp;</a>
+    <a href="{% url 'mission-home' %}">Mision-Home</a>
+    <a>&emsp;</a>
+    {% else %}
+    <a href="{% url 'login' %}">Log In</a>
+    <a>&emsp;</a>
+    <a href="{% url 'signup' %}">Sign Up</a>
+    {% endif %}
+
+
+    <h1>exp - Mainページ</h1>
+
+    {% if user.is_authenticated %}
+    こんにちは<b>{{ profile.user.username }}さん</b>。
+    <br>
+    {% if profile %}
+    区分（経営者/従業員）：{{ profile.get_kubun_display }}
+    <br>
+    経験値：{{ profile.exp_total }}
+    <br>
+    <br>
+    <br>
+    <b>【自分で作成したミッション】</b>
+    <hr>
+    {% for mission in my_missions reversed %}
+    <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
+    <li>実施状況：<b>{{ mission.get_mission_flg_display }}</b></li>
+    <li>いいね数：{{ mission.good_count }}</li>
+    <li>参加人数：{{ mission.participants }}人</li>
+    <hr>
+    {% endfor %}
+    <br>
+    <br>
+    <br>
+    <b>【参加中/参加したミッション】</b>
+    <hr>
+    {% for item in join_missions reversed  %}
+    <h1><a href="{% url 'mission-detail' item.id %}">{{ item.title }}</a></h1>
+    <li>実施状況：<b>{{ item.get_mission_flg_display }}</b></li>
+    <li>いいね数：{{ item.good_count }}</li>
+    <li>参加人数：{{ item.participants }}</li>
+    {% endfor %}
+    
+    {% else %}
+    <p>データがありません。</p>
+    {% endif %}
+    {% else %}
+    <h3>loginしてください。</h3>
+    {% endif %}
+    
+
+</body>
+
+</html>

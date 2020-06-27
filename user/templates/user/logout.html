@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>expアプリ</title>
+</head>
+
+<body>
+
+    <a href="{% url 'expmain' %}">exp Main</a>
+    <a>&emsp;</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">Log Out</a>
+    <a>&emsp;</a>
+    {% else %}
+    <a href="{% url 'login' %}">Log In</a>
+    <a>&emsp;</a>
+    <a href="{% url 'signup' %}">Sign Up</a>
+    {% endif %}
+
+
+    <h1>exp - logoutフォーム</h1>
+    <h3>ログアウトされました。</h3>
+    {% if user.is_authenticated %}
+    <a>loginしています。</a>
+    {% else %}
+    <a>logoutしています。</a>
+    {% endif %}
+</body>
+
+</html>
