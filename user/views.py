@@ -15,6 +15,7 @@ def expmain(request):
         
         my_missions = Mission.objects.filter(author=request.user)   # 自分が作成したミッション
         join_missions = profile.mission_set.all                     # 自分が参加したミッション
+        # all_profile = Profile.all
 
         contents = {
             "profile": profile,

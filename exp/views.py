@@ -17,7 +17,7 @@ def total_exp():
     return
 
 
-# (Higa) いいねのexp加算する機能
+# いいねのexp加算する機能
 # ※以下のMissionLike()で行っているので不要かと思います。
 def good_count():
     return
@@ -88,7 +88,7 @@ def MissionGood(request, pk):
     return redirect('mission-detail', pk)
 
 
-# (Higa) 参加するボタンが押されたときの動作(文字列型)
+# 参加するボタンが押されたときの動作(文字列型)
 
 # def MissionJoin(request, pk):
 #     try:
@@ -154,7 +154,7 @@ def MissionJoin(request, pk):
 
 
 
-# (Higa) ミッションクリアボタンが押されたときの動作
+#  ミッションクリアボタンが押されたときの動作
 def MissionSuccess(request, pk):
     try:
         mission = Mission.objects.get(pk=pk)
@@ -162,14 +162,23 @@ def MissionSuccess(request, pk):
         raise Http404
     mission.mission_flg = 1
     mission.save()
-    author_profile = Profile.objects.get(user=mission.author)   # 依頼者のプロフィール
-    author_profile.exp_total += mission.success_exp + mission.good_count
+    # ミッション作成者
+    author_profile = Profile.objects.get(user=mission.author) 
+    author_profile.exp_total += mission.success_exp + mission.participants
     author_profile.save()
-    s = mission.participants_list_text
-    items = [x.strip() for x in s.split(',') if not s == '']  # 参加者の空白以外の文字列を’,’で分割しリスト化する。
-
+    items = mission.participants_list.all()
+    # ミッション参加者
     for item in items:
-        participant_profile = Profile.objects.get(user__username=item)   #参加者のプロフィール
-        participant_profile.exp_total += mission.success_exp
-        participant_profile.save()
+        item.exp_total += mission.success_exp
+        item.save()
     return redirect('mission-detail', pk)
+
+    # 文字列型
+    # s = mission.participants_list_text
+    # items = [x.strip() for x in s.split(',') if not s == '']  # 参加者の空白以外の文字列を’,’で分割しリスト化する。
+
+    # for item in items:
+    #     participant_profile = Profile.objects.get(user__username=item)   #参加者のプロフィール
+    #     participant_profile.exp_total += mission.success_exp
+    #     participant_profile.save()
+    # return redirect('mission-detail', pk)
