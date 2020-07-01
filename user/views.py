@@ -15,13 +15,14 @@ def expmain(request):
         
         my_missions = Mission.objects.filter(author=request.user)   # 自分が作成したミッション
         join_missions = profile.mission_set.all                     # 自分が参加したミッション
-        # all_profile = Profile.all
+        # all_profile = Profile.objects.all()
 
         contents = {
             "profile": profile,
             "total_exp": total_exp,
             "my_missions": my_missions,
-            "join_missions": join_missions
+            "join_missions": join_missions,
+            # "all_profile": all_profile,
         }
     else:
         contents = {}
@@ -52,3 +53,18 @@ def signup(request):
         "profile_form": profile_form,
     }
     return render(request, 'user/signup.html', contents)
+
+def management(request):
+    all_profile = Profile.objects.all()
+    # for item in all_profile:
+    #     my_mission = Mission.objects.filter(author=item.user)  # 作成したミッション
+        # join_missions = item.mission_set.all.count()                   # 参加したミッション
+    
+    contents = {
+        'all_profile': all_profile,
+        'name': 'a',
+        'exp': 'b',
+        # 'my_mission': my_mission,
+        'success': 'd',
+    }
+    return render(request, 'user/management.html', contents)

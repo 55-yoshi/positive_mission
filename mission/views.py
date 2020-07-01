@@ -10,6 +10,8 @@ from django.views.generic import (
 from .models import Mission
 from user.models import Profile
 from . import models
+from django.shortcuts import render
+
 
 class MissionListView(ListView):
     model = Mission
@@ -22,6 +24,24 @@ class MissionListView(ListView):
 class MissionDetailView(DetailView):
     model = Mission
     template_name = 'mission/mission_detail.html'
+    def MissionJoin(request, pk):
+        try:
+            mission = Mission.objects.get(pk=pk)
+        except Mission.DoesNotExist:
+            raise Http404
+
+        participant = Profile.objects.get(user=request.user)    # ボタンを押す人のプロフィール
+        items = mission.participants_list.all()                 # 全ての参加者のプロフィールのリスト
+        # もし保存された参加者の中に本人の名前が含まれていたら
+        if participant in items:
+            context = {
+                'flg': '脱退',
+            }
+        else:
+            context = {
+                'flg': '参加',
+            }
+            return render(request, 'mission/mission_detail.html', context)
 
 
 class MissionCreateView(LoginRequiredMixin, CreateView):
@@ -33,7 +53,8 @@ class MissionCreateView(LoginRequiredMixin, CreateView):
         profile = Profile.objects.get(user=self.request.user)  # 自分のプロフィール
         # mission = Mission.objects.get(pk=self.pk)
         profile.exp_total -= 3
-        # profile.exp_total =- mission.cost_exp
+        # profile.exp_total -= mission.cost_exp
+        profile.create_count += 1
         profile.save()
         return super().form_valid(form)
 

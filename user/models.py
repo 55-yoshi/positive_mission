@@ -13,6 +13,10 @@ class Profile(models.Model):
                              choices=KUBUN_CHOICES,
                              blank=True)
     exp_total = models.IntegerField(verbose_name='経験値', default=10)
-
+    create_count = models.IntegerField(default=0)         # ミッション作成回数
+    my_success_count = models.IntegerField(default=0)     # 自ら作成したミッションの達成数
+    join_count = models.IntegerField(default=0)           # ミッション参加回数
+    team_success_count = models.IntegerField(default=0)   # 参加したミッションの達成回数
+    
     def __str__(self):
         return self.user.username

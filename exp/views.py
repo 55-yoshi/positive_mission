@@ -131,12 +131,23 @@ def MissionJoin(request, pk):
         raise Http404
 
     participant = Profile.objects.get(user=request.user)    # ボタンを押す人のプロフィール
+    items = mission.participants_list.all()                 # 全ての参加者のプロフィールのリスト
 
+    # if participant in items:
+    #     context = {
+    #         'flg': '脱退',
+    #     }
+    # else:
+    #     context = {
+    #         'flg': '参加',
+    #     }
+    #     return render(request, 'mission/mission_detail.html', context)
 
-    items = mission.participants_list.all()   #全ての参加者のプロフィールのリスト
-
-    if participant in items:  # もし保存された参加者の中に本人の名前が含まれていたら
+    # もし保存された参加者の中に本人の名前が含まれていたら
+    if participant in items:  
         mission.participants -= 1
+        participant.join_count -= 1
+        participant.save()
         for item in items:
             if item == participant:
                 mission.participants_list.remove(participant)
@@ -147,6 +158,8 @@ def MissionJoin(request, pk):
         mission.participants += 1
         mission.save()
         mission.participants_list.add(participant)
+        participant.join_count += 1
+        participant.save()
         messages.success(request, 'このMissionに参加しました！')
         return redirect('mission-detail', pk)
 
@@ -165,11 +178,13 @@ def MissionSuccess(request, pk):
     # ミッション作成者
     author_profile = Profile.objects.get(user=mission.author) 
     author_profile.exp_total += mission.success_exp + mission.participants
+    author_profile.my_success_count += 1
     author_profile.save()
-    items = mission.participants_list.all()
     # ミッション参加者
+    items = mission.participants_list.all()
     for item in items:
         item.exp_total += mission.success_exp
+        item.team_success_count += 1
         item.save()
     return redirect('mission-detail', pk)
 

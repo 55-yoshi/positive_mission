@@ -1,3 +1,8 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+    
+    
 <!DOCTYPE html>
 <html>
 
@@ -7,7 +12,7 @@
 
 <body>
 
-    <a href="{% url 'expmain' %}">exp Main</a>
+    <!-- <a href="{% url 'expmain' %}">exp Main</a>
     <a>&emsp;</a>
     {% if user.is_authenticated %}
     <a href="{% url 'logout' %}">Log Out</a>
@@ -19,9 +24,14 @@
     <a>&emsp;</a>
     <a href="{% url 'signup' %}">Sign Up</a>
     {% endif %}
+    
+    {% if profile.get_kubun_display == '経営者' %}
+        <a href="{% url 'management' %}">メンバー管理</a>
+    {% endif %}
+         -->
 
 
-    <h1>exp - Mainページ</h1>
+    <h1>マイページ</h1>
 
     {% if user.is_authenticated %}
     こんにちは<b>{{ profile.user.username }}さん</b>。
@@ -65,3 +75,4 @@
 </body>
 
 </html>
+{% endblock body %}
