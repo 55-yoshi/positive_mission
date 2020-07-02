@@ -15,5 +15,4 @@ urlpatterns = [
           views.MissionUpdateView.as_view(),
           name='mission-update'),
 
-
 ]

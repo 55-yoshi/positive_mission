@@ -123,7 +123,6 @@ def MissionGood(request, pk):
 
 
 # 参加するボタンが押されたときの動作
-
 def MissionJoin(request, pk):
     try:
         mission = Mission.objects.get(pk=pk)
@@ -132,16 +131,6 @@ def MissionJoin(request, pk):
 
     participant = Profile.objects.get(user=request.user)    # ボタンを押す人のプロフィール
     items = mission.participants_list.all()                 # 全ての参加者のプロフィールのリスト
-
-    # if participant in items:
-    #     context = {
-    #         'flg': '脱退',
-    #     }
-    # else:
-    #     context = {
-    #         'flg': '参加',
-    #     }
-    #     return render(request, 'mission/mission_detail.html', context)
 
     # もし保存された参加者の中に本人の名前が含まれていたら
     if participant in items:  

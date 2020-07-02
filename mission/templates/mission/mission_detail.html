@@ -37,11 +37,17 @@
         {% csrf_token %}
         <input type="submit" value="いいね">
     </form>
+    <p></p>     
     <form action="{% url 'mission-join' object.pk %}">
         {% csrf_token %}
-        <input type="submit" value="{{flg}}">
+        {% if participant in mission.participants_list.all %}
+            <input type="submit" value="脱退">
+        {% else %}
+            <input type="submit" value="参加">
+        {% endif %}      
     </form>
 {% endif %}
+
 {% if request.user == object.author and object.mission_flg == 0 %}
     <form action="{% url 'mission-success' object.pk %}">
         {% csrf_token %}

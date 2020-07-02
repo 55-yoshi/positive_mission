@@ -17,6 +17,6 @@ class Profile(models.Model):
     my_success_count = models.IntegerField(default=0)     # 自ら作成したミッションの達成数
     join_count = models.IntegerField(default=0)           # ミッション参加回数
     team_success_count = models.IntegerField(default=0)   # 参加したミッションの達成回数
-    
+
     def __str__(self):
-        return self.user.username
+        return str(self.user)
