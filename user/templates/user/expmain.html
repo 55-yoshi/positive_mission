@@ -43,7 +43,9 @@
     <br>
     <br>
     <br>
-    <b>【自分で作成したミッション】</b>
+    
+
+    <b>【自分で作成したミッション】 ／</b><a href="{% url 'join-list' %}">【参加中/参加したミッション】</a>
     <hr>
     {% for mission in my_missions reversed %}
     <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>

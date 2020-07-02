@@ -1,0 +1,40 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+    
+    <head>
+        <title>expアプリ</title>
+    </head>
+    <h1>マイページ</h1>
+
+    {% if user.is_authenticated %}
+    こんにちは<b>{{ profile.user.username }}さん</b>。
+    <br>
+    {% if profile %}
+    区分（経営者/従業員）：{{ profile.get_kubun_display }}
+    <br>
+    経験値：{{ profile.exp_total }}
+    <br>
+    <br>
+    <br>
+    
+
+    <b>【参加中/参加したミッション】 ／</b><a href="{% url 'expmain' %}"> 【自分で作成したミッション】</a>
+    <hr>
+    {% for item in join_missions reversed  %}
+    <h1><a href="{% url 'mission-detail' item.id %}">{{ item.title }}</a></h1>
+    <li>実施状況：<b>{{ item.get_mission_flg_display }}</b></li>
+    <li>いいね数：{{ item.good_count }}</li>
+    <li>参加人数：{{ item.participants }}</li>
+    <hr>
+    {% endfor %}
+    
+    {% else %}
+    <p>データがありません。</p>
+    {% endif %}
+    {% else %}
+    <h3>loginしてください。</h3>
+    {% endif %}
+    
+{% endblock body %}
+    

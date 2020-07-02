@@ -6,27 +6,40 @@ from exp.views import total_exp
 from mission.models import Mission
 
 def expmain(request):
-
     if request.user.is_authenticated:
-        # profile = Profile.objects.get(user=request.user)
-        
         profiles = Profile.objects.filter(user__username=request.user.username)
         profile = profiles[0]
         
         my_missions = Mission.objects.filter(author=request.user)   # 自分が作成したミッション
-        join_missions = profile.mission_set.all                     # 自分が参加したミッション
-        # all_profile = Profile.objects.all()
+        join_missions = profile.mission_set.all                     # 自分が参加したミッション    
 
         contents = {
             "profile": profile,
             "total_exp": total_exp,
             "my_missions": my_missions,
             "join_missions": join_missions,
-            # "all_profile": all_profile,
         }
     else:
         contents = {}
     return render(request, 'user/expmain.html', contents)
+
+def join_list(request):
+    if request.user.is_authenticated:
+        profiles = Profile.objects.filter(user__username=request.user.username)
+        profile = profiles[0]
+        
+        my_missions = Mission.objects.filter(author=request.user)   # 自分が作成したミッション
+        join_missions = profile.mission_set.all                     # 自分が参加したミッション    
+
+        contents = {
+            "profile": profile,
+            "total_exp": total_exp,
+            "my_missions": my_missions,
+            "join_missions": join_missions,
+        }
+    else:
+        contents = {}
+    return render(request, 'user/join_list.html', contents)
 
     
 
@@ -56,7 +69,8 @@ def signup(request):
 
 def management(request):
     all_profile_ = Profile.objects.all()
-    all_profile = sorted(all_profile_, key=lambda x: x.exp_total, reverse=True)
+    all_profile = sorted(all_profile_, key=lambda x: x.exp_total, reverse=True
+    )
     # for item in all_profile:
     #     my_mission = Mission.objects.filter(author=item.user)  # 作成したミッション
         # join_missions = item.mission_set.all.count()                   # 参加したミッション
