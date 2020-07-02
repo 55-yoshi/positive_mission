@@ -7,13 +7,14 @@
 <h1>メンバー管理</h1>
 <table border="1">
     <tr>
-        <th>名前</th><th>経験値</th><th>ミッション作成数</th><th>マイミッション達成数</th><th>ミッション参加数</th><th>チームミッション達成数</th>
+        <th>区分</th><th>名前</th><th>経験値</th><th>ミッション作成数</th><th>マイミッション達成数</th><th>ミッション参加数</th><th>チームミッション達成数</th>
     </tr>
     {% for item in all_profile %}
     <tr>
-        <th>{{ item.user.username }}</th><td>{{ item.exp_total }}</td><td>{{ item.create_count }}</td><td>{{ item.my_success_count }}</td><td>{{ item.join_count }}</td><td>{{ item.team_success_count }}</td>
+        <td>{{ item.get_kubun_display }}</td><th>{{ item.user.username }}</th><td>{{ item.exp_total }}</td><td>{{ item.create_count }}</td><td>{{ item.my_success_count }}</td><td>{{ item.join_count }}</td><td>{{ item.team_success_count }}</td>
     </tr>  
     {% endfor %} 
 </table>
 {% endblock body %}
     
+

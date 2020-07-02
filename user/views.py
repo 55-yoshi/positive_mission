@@ -55,7 +55,8 @@ def signup(request):
     return render(request, 'user/signup.html', contents)
 
 def management(request):
-    all_profile = Profile.objects.all()
+    all_profile_ = Profile.objects.all()
+    all_profile = sorted(all_profile_, key=lambda x: x.exp_total, reverse=True)
     # for item in all_profile:
     #     my_mission = Mission.objects.filter(author=item.user)  # 作成したミッション
         # join_missions = item.mission_set.all.count()                   # 参加したミッション
