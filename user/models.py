@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 KUBUN_CHOICES = (
     ('1', '経営者'),
     ('2', '従業員'),
+    ('3', '管理者'),
 )
 
 class Profile(models.Model):

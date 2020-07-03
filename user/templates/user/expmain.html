@@ -37,7 +37,7 @@
     こんにちは<b>{{ profile.user.username }}さん</b>。
     <br>
     {% if profile %}
-    区分（経営者/従業員）：{{ profile.get_kubun_display }}
+    区分（経営者/従業員/管理者）：{{ profile.get_kubun_display }}
     <br>
     経験値：{{ profile.exp_total }}
     <br>

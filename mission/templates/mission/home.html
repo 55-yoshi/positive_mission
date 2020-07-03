@@ -1,18 +1,8 @@
 {% extends 'mission/base.html' %}
-
 {% block body %}
 
-<!-- <a href="{% url 'expmain' %}">UserPage</a>
-<a>&emsp;</a> -->
-
 {% if user.is_authenticated %}
-<h1>
-    <!--
-    {{ profile.user.username }}さん、Mission一覧はこちらです。
-    -->
-    <!-- (Higa) ログイン中のユーザー名を取得 -->
-    {{ user.username }}さん、Mission一覧はこちらです。
-</h1>
+<h1>{{ user.username }}さん、Mission一覧はこちらです。</h1>
 {% endif %}
 
 <div>
@@ -22,6 +12,7 @@
     </form>
 
     {% for mission in missions %}
+    {% if mission.get_approval_display == '承認済み' %}
     <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
     <ul>
         <li>依頼者：<b>{{ mission.author }}</b></li>
@@ -32,6 +23,7 @@
         <li>参加者数：<b>{{ mission.participants }}</b>人</li>
     </ul>
     <hr>
+    {% endif %}
     {% endfor %}
 
     
@@ -47,5 +39,4 @@
         
     
 </div>
-
 {% endblock body %}

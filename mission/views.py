@@ -13,13 +13,25 @@ from . import models
 from django.shortcuts import render
 
 
+def base(request):
+    template_name = 'mission/base.html'
+    context = {
+        'profile': Profile.objedt.get(user=request.user)
+        }
+    return render(request, template_name, context)
+
 class MissionListView(ListView):
     model = Mission
     template_name = 'mission/home.html'
     context_object_name = 'missions'
-    paginate_by = 8
+    paginate_by = 9
     ordering = ['-date_posted']
 
+    def get_context_data(self, **kwargs):
+        context = super(MissionListView, self).get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)  
+        context["profile"] = profile
+        return context
 
 class MissionDetailView(DetailView):
     model = Mission
@@ -27,8 +39,8 @@ class MissionDetailView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super(MissionDetailView, self).get_context_data(**kwargs)
-        participant = Profile.objects.get(user=self.request.user)  # ボタンを押す人のプロフィール
-        context["participant"] = participant
+        profile = Profile.objects.get(user=self.request.user)  # ボタンを押す人のプロフィール
+        context["profile"] = profile
         return context
 
 
@@ -72,3 +84,16 @@ class MissionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == mission.author:
             return True
         return False
+
+class MissionWaitingListView(ListView):
+    model = Mission
+    template_name = 'mission/mission_waiting.html'
+    context_object_name = 'missions'
+    paginate_by = 9
+    ordering = ['-date_posted']
+
+    def get_context_data(self, **kwargs):
+        context = super(MissionWaitingListView, self).get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)  
+        context["profile"] = profile
+        return context

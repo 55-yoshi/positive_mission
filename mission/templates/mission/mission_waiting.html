@@ -1,0 +1,42 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+<h1>承認待ちのミッション</h1>
+
+<div>
+
+    <form action="{% url 'mission-create' %}">
+        <button type="submit">New Mission</button>
+    </form>
+
+    
+    {% for mission in missions %}
+        {% if mission.get_approval_display == '承認待ち' %}
+            <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
+            <ul>
+                <li>依頼者：<b>{{ mission.author }}</b></li>
+                <li>達成状況：<b>{{ mission.get_mission_flg_display }}</b></li>
+                <li>時間：<b>{{ mission.date_posted }}</b></li>
+                <li>獲得EXP：<b>{{ mission.success_exp }}</b>exp</li>
+                <li>現在いいね数：<b>{{ mission.good_count }}</b></li>
+                <li>参加者数：<b>{{ mission.participants }}</b>人</li>
+            </ul>
+            <hr>
+        {% endif %}
+    {% endfor %}
+    
+    
+    {% if page_obj.has_previous %}
+        <a href="{% url 'mission-home' %}">&laquo;first</a>
+        <a href="?page={{page_obj.previous_page_number}}">&laquo;prev</a>
+    {% endif %}
+        <span>[ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ]</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number}}">next&raquo;</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a>
+    {% endif %}
+        
+    
+</div>
+{% endblock body %}
+    

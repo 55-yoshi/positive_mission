@@ -67,19 +67,14 @@ def signup(request):
     }
     return render(request, 'user/signup.html', contents)
 
+
+# メンバー管理ページ
 def management(request):
     all_profile_ = Profile.objects.all()
-    all_profile = sorted(all_profile_, key=lambda x: x.exp_total, reverse=True
-    )
-    # for item in all_profile:
-    #     my_mission = Mission.objects.filter(author=item.user)  # 作成したミッション
-        # join_missions = item.mission_set.all.count()                   # 参加したミッション
-    
+    all_profile = sorted(all_profile_, key=lambda x: x.exp_total, reverse=True)
     contents = {
         'all_profile': all_profile,
-        'name': 'a',
-        'exp': 'b',
-        # 'my_mission': my_mission,
-        'success': 'd',
-    }
+        'profile': Profile.objects.get(user=request.user)
+        }
+
     return render(request, 'user/management.html', contents)

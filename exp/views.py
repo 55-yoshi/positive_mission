@@ -186,3 +186,17 @@ def MissionSuccess(request, pk):
     #     participant_profile.exp_total += mission.success_exp
     #     participant_profile.save()
     # return redirect('mission-detail', pk)
+
+
+
+# ミッション承認ボタン
+def MissionApproval(request, pk):
+    try:
+        mission = Mission.objects.get(pk=pk)
+    except Mission.DoesNotExist:
+        raise Http404
+
+    mission.approval = 1
+    mission.save()
+
+    return redirect('mission-detail', pk)

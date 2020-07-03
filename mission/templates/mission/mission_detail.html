@@ -40,7 +40,7 @@
     <p></p>     
     <form action="{% url 'mission-join' object.pk %}">
         {% csrf_token %}
-        {% if participant in mission.participants_list.all %}
+        {% if profile in mission.participants_list.all %}
             <input type="submit" value="脱退">
         {% else %}
             <input type="submit" value="参加">
@@ -48,17 +48,28 @@
     </form>
 {% endif %}
 
-{% if request.user == object.author and object.mission_flg == 0 %}
+<!-- ログイン中のユーザーが、ミッションの作成者であり未達成の場合 -->
+{% if request.user == object.author and object.mission_flg == 0 %} 
+    <!-- 承認済みの場合 -->
+    {% if object.approval == 1 %}
     <form action="{% url 'mission-success' object.pk %}">
         {% csrf_token %}
-        <input type="submit" value="ミッションクリア">
+        <input type="submit" value="ミッションクリア">   
     </form>
+    {% endif %}     
     <form action="{% url 'mission-update' object.pk %}">
         {% csrf_token %}
         <input type="submit" value="Mission内容修正">
     </form>
 {% endif %}
 
-
+<!-- 承認待ちのミッションで、経営者か管理者だった場合「承認」ボタンを表示する -->
+{% if object.approval == 0 and profile.get_kubun_display == '経営者' or profile.get_kubun_display == '管理者' %}
+    <p>{{ object.get_approval_display }}</p>
+    <form action="{% url 'mission-approval' object.pk %}">
+        {% csrf_token %}
+        <input type="submit" value="承認">
+    </form>
+{% endif %}
 
 {% endblock body %}

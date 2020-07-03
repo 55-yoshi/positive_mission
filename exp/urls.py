@@ -9,5 +9,6 @@ urlpatterns = [
     path('mission/<int:pk>/join/', views.MissionJoin, name='mission-join'),
     # ミッションクリアにアクセスしたとき
     path('mission/<int:pk>/gain/', views.MissionSuccess, name='mission-success'),
-    
+    # ミッション承認にアクセスされたとき
+    path('mission/<int:pk>/approval', views.MissionApproval, name='mission-approval')
 ]
