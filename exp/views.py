@@ -3,6 +3,11 @@ from django.shortcuts import redirect, render
 from mission.models import Mission, Good
 from user.models import Profile 
 from django.contrib import messages
+from .forms import ApprovalForm
+from django.http import HttpResponse
+from django.http import Http404
+from django.utils import timezone
+
 
 # expを合計する機能
 def total_exp():
@@ -196,7 +201,10 @@ def MissionApproval(request, pk):
     except Mission.DoesNotExist:
         raise Http404
 
-    mission.approval = 1
-    mission.save()
-
-    return redirect('mission-detail', pk)
+    if request.method == 'POST':
+        mission.success_exp = request.POST['success_exp']
+        mission.approval = 1
+        mission.date_posted = timezone.now()
+        mission.save()
+        messages.success(request, 'このミッションを承認しました！')
+        return redirect('mission-detail', pk)

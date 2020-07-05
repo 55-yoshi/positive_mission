@@ -7,18 +7,13 @@ from django.views.generic import (
     DeleteView,
     TemplateView,
 )
+from django.views.generic.edit import ModelFormMixin
 from .models import Mission
 from user.models import Profile
 from . import models
 from django.shortcuts import render
+from exp.forms import ApprovalForm
 
-
-def base(request):
-    template_name = 'mission/base.html'
-    context = {
-        'profile': Profile.objedt.get(user=request.user)
-        }
-    return render(request, template_name, context)
 
 class MissionListView(ListView):
     model = Mission
@@ -33,16 +28,20 @@ class MissionListView(ListView):
         context["profile"] = profile
         return context
 
-class MissionDetailView(DetailView):
+class MissionDetailView(DetailView, ModelFormMixin):
     model = Mission
     template_name = 'mission/mission_detail.html'
-    
+    fields = ()
+
     def get_context_data(self, **kwargs):
         context = super(MissionDetailView, self).get_context_data(**kwargs)
-        profile = Profile.objects.get(user=self.request.user)  # ボタンを押す人のプロフィール
-        context["profile"] = profile
+        profile = Profile.objects.get(user=self.request.user)  # ログインユーザーのプロフィール
+        context.update({
+            'form': ApprovalForm(**self.get_form_kwargs()),
+            'profile' : profile,
+        })
         return context
-
+    
 
 class MissionCreateView(LoginRequiredMixin, CreateView):
     model = Mission
@@ -89,7 +88,7 @@ class MissionWaitingListView(ListView):
     model = Mission
     template_name = 'mission/mission_waiting.html'
     context_object_name = 'missions'
-    paginate_by = 9
+    # paginate_by = 9
     ordering = ['-date_posted']
 
     def get_context_data(self, **kwargs):

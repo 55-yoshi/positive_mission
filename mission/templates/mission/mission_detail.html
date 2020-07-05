@@ -7,7 +7,8 @@
     <p>{{ object.date_posted|date:'Y-m-d P' }}</p>
     <p> {{ object.content }}</p>
     <hr>
-    <p>獲得EXP：<b>{{ object.success_exp}}</b></p>
+    <b><p>【 {{ object.get_approval_display }} 】</p></b>
+    <p>クリア報酬EXP：<b>{{ object.success_exp}}</b>exp</p>
     <p>達成状況：<b>{{ object.get_mission_flg_display }}</b></p>
     <p>いいね！：<b>{{ object.good_count}}</b></p>
     <p>参加人数：<b>{{ object.participants }}</b>人</p>
@@ -37,7 +38,7 @@
         {% csrf_token %}
         <input type="submit" value="いいね">
     </form>
-    <p></p>     
+    <br>     
     <form action="{% url 'mission-join' object.pk %}">
         {% csrf_token %}
         {% if profile in mission.participants_list.all %}
@@ -62,14 +63,19 @@
         <input type="submit" value="Mission内容修正">
     </form>
 {% endif %}
+<br>
 
 <!-- 承認待ちのミッションで、経営者か管理者だった場合「承認」ボタンを表示する -->
-{% if object.approval == 0 and profile.get_kubun_display == '経営者' or profile.get_kubun_display == '管理者' %}
-    <p>{{ object.get_approval_display }}</p>
-    <form action="{% url 'mission-approval' object.pk %}">
-        {% csrf_token %}
-        <input type="submit" value="承認">
-    </form>
+{% if profile.get_kubun_display == '経営者' or profile.get_kubun_display == '管理者' %}
+{% if object.approval == 0 %}
+    <table>
+        <form action="{% url 'mission-approval' object.pk %}" method="POST">
+            {% csrf_token %}
+            <tr><th>クリア報酬EXP</th><td>{{ form.success_exp }}</td></tr>
+            <tr><td><input type="submit" value="承認"></td></tr>
+        </form>
+    </table>
 {% endif %}
+{% endif %}   
 
 {% endblock body %}

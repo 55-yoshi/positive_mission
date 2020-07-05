@@ -25,16 +25,16 @@
         {% endif %}
     {% endfor %}
     
-    
-    {% if page_obj.has_previous %}
-        <a href="{% url 'mission-home' %}">&laquo;first</a>
+<!-- 承認で表示するミッション数が変わるとページネーションがズレる -->
+    <!-- {% if page_obj.has_previous %}
+        <a href="{% url 'mission-waiting' %}">&laquo;first</a>
         <a href="?page={{page_obj.previous_page_number}}">&laquo;prev</a>
     {% endif %}
         <span>[ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ]</span>
     {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number}}">next&raquo;</a>
         <a href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a>
-    {% endif %}
+    {% endif %} -->
         
     
 </div>
