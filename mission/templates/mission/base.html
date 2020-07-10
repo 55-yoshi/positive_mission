@@ -14,8 +14,9 @@
     {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">Log Out</a>
         <a>&emsp;</a>
-        <a href="{% url 'mission-home' %}">ミッション一覧</a>
+        <a href="{% url 'mission-home' %}">Missionリスト</a>
         <a>&emsp;</a>
+        <a href="{% url 'thanks-list' %}">ありがとうリスト</a>
         {% if profile.get_kubun_display == '経営者' or profile.get_kubun_display == '管理者' %}
             <a href="{% url 'management' %}">メンバー管理</a>
             <a>&emsp;</a>

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mission.apps.MissionConfig',
     'user.apps.UserConfig',
     'exp.apps.ExpConfig',
+    'thanks.apps.ThanksConfig',
 ]
 
 MIDDLEWARE = [

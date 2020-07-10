@@ -37,9 +37,9 @@
     こんにちは<b>{{ profile.user.username }}さん</b>。
     <br>
     {% if profile %}
-    区分（経営者/従業員/管理者）：{{ profile.get_kubun_display }}
+    区分（経営者/従業員/管理者）：<b>{{ profile.get_kubun_display }}</b>
     <br>
-    経験値：{{ profile.exp_total }}
+    経験値：<b>{{ profile.exp_total }}</b> exp
     <br>
     <br>
     <br>
@@ -49,23 +49,13 @@
     <hr>
     {% for mission in my_missions reversed %}
     <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
+    <li>承認状況：<b>{{ mission.get_approval_display }}</b></li>
     <li>実施状況：<b>{{ mission.get_mission_flg_display }}</b></li>
-    <li>いいね数：{{ mission.good_count }}</li>
-    <li>参加人数：{{ mission.participants }}人</li>
+    <li>いいね数：<b>{{ mission.good_count }}</b></li>
+    <li>参加人数：<b>{{ mission.participants }}</b>人</li>
     <hr>
     {% endfor %}
     <br>
-    <br>
-    <br>
-    <b>【参加中/参加したミッション】</b>
-    <hr>
-    {% for item in join_missions reversed  %}
-    <h1><a href="{% url 'mission-detail' item.id %}">{{ item.title }}</a></h1>
-    <li>実施状況：<b>{{ item.get_mission_flg_display }}</b></li>
-    <li>いいね数：{{ item.good_count }}</li>
-    <li>参加人数：{{ item.participants }}</li>
-    {% endfor %}
-    
     {% else %}
     <p>データがありません。</p>
     {% endif %}

@@ -1,0 +1,30 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+    
+<h1>ありがとうリスト</h1>
+<br>
+<form action="{% url 'thanks-create' %}">
+    <input type="submit" value="New Thanks!!">
+</form>
+{% for item in thanks_list %}
+<hr>
+<ul>
+        <b>{{ item.giver }}</b>さんから、
+        <b>
+            {% for recipient in item.recipients.all %}
+                {% if forloop.last %}
+                    {{ recipient.user }}さん
+                {% else %}
+                    {{ recipient.user }}さん、
+                {% endif %}   
+            {% endfor %} 
+        </b> へ、ありがとう！！ 
+    <p>内容：{{ item.content }}</p>
+</ul>
+<p>時間：{{ item.date_posted }}</p>
+{% endfor %}
+    
+
+{% endblock body %}
+    

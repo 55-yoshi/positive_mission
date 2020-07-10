@@ -1,0 +1,22 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+    <h1>詳細</h1>
+<center>
+<p><b>{{ object.date_posted }}</b></p>
+<p><b>{{ object.giver }}さん</b>から
+<b>
+    {% for recipient in object.recipients.all %}
+        {% if forloop.last %}
+            {{ recipient.user }}さん
+        {% else %}
+            {{ recipient.user }}さん、
+        {% endif %}    
+    {% endfor %}
+</b>へ感謝！</p>
+<p><b>{{ object.content }}</b></p>
+
+</center>
+
+{% endblock body %}
+    

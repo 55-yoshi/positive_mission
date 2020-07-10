@@ -1,0 +1,16 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+    
+<h1>THANKS CREATE</h1>
+
+<form  action="{% url 'thanks-create' %}"  method='POST'>
+    {% csrf_token %}
+    {{ request.user }}さん ➡ {{ form.recipients }}さん
+    <table>
+        <tr><th>content</th><td>{{ form.content }}</td></tr>
+        <tr><td></td><td><input type="submit" value="作成"> </td></tr>
+    </table>
+</form>
+{% endblock body %}
+    

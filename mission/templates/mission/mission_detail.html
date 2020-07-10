@@ -14,20 +14,19 @@
     <p>参加人数：<b>{{ object.participants }}</b>人</p>
     {% if object.participants > 0 %}
     <p>参加者：<b>
-    {% for item in mission.participants_list.all %}
-        {% if forloop.last %}
-            {{ item.user }}さん 
-        {% else %}
-            {{ item.user }}さん、
-        {% endif %}
-    {% endfor %}
-        </b></p>
+        {% for item in mission.participants_list.all %}
+            {% if forloop.last %}
+                {{ item.user }}さん 
+            {% else %}
+                {{ item.user }}さん、
+            {% endif %}
+        {% endfor %}
+    </b></p>
     {% endif %}
-        
     
     {% if messages %}      
         {% for message in messages %}
-        <h4>{{ message }}</h4>
+            <h4>{{ message }}</h4>
         {% endfor %}      
     {% endif %}           
 </center>
