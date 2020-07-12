@@ -17,10 +17,13 @@
         <a href="{% url 'mission-home' %}">Missionリスト</a>
         <a>&emsp;</a>
         <a href="{% url 'thanks-list' %}">ありがとうリスト</a>
+        <a>&emsp;</a>
         {% if profile.get_kubun_display == '経営者' or profile.get_kubun_display == '管理者' %}
             <a href="{% url 'management' %}">メンバー管理</a>
             <a>&emsp;</a>
             <a href="{% url 'mission-waiting' %}">承認待ちのミッション</a>
+            <a>&emsp;</a>
+            <a href="{% url 'thanks-waiting' %}">承認待ちのサンクス</a>
         {% endif %}        
     {% else %}
         <a href="{% url 'login' %}">Log In</a>

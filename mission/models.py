@@ -34,6 +34,8 @@ class Mission(models.Model):
     
 
 # いいねを押す人 / いいねを押されるMission
-class Good(models.Model):
+class Good_mission(models.Model):
+    mission_good_giver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mission_good_giver')
     good_mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
-    good_giver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='good_giver')
+
+

@@ -1,22 +1,58 @@
 {% extends 'mission/base.html' %}
 
 {% block body %}
-    <h1>詳細</h1>
+    <!-- <h1>ありがとう詳細</h1> -->
 <center>
-<p><b>{{ object.date_posted }}</b></p>
-<p><b>{{ object.giver }}さん</b>から
-<b>
-    {% for recipient in object.recipients.all %}
-        {% if forloop.last %}
-            {{ recipient.user }}さん
-        {% else %}
-            {{ recipient.user }}さん、
-        {% endif %}    
-    {% endfor %}
-</b>へ感謝！</p>
-<p><b>{{ object.content }}</b></p>
-
+    <h2><b>{{ object.giver }}さん</b>から
+    <b>
+        {% for recipient in object.recipients.all %}
+            {% if forloop.last %}
+                {{ recipient.user }}さん
+            {% else %}
+                {{ recipient.user }}さん、
+            {% endif %}    
+        {% endfor %}
+    </b>へ感謝！</h2>
+    <p>{{ object.date_posted }}</p>
+    <p>{{ object.content }}</p>
+    <p>贈呈EXP：<b>{{ object.reward_exp }}</b>exp</p>
+    <p>いいね数：<b>{{ object.good_count }}</b></p>
+    {% if messages %}      
+        {% for message in messages %}
+            <h4>{{ message }}</h4>
+        {% endfor %}      
+    {% endif %} 
 </center>
+<hr>
+
+<!-- ログイン中のユーザーが、giver(感謝をする側)で、'承認待ち'である時に表示するボタン -->
+{% if request.user == object.giver and object.get_approval_display == '承認待ち' %}      
+    <form action="{% url 'thanks-update' object.pk %}">
+        {% csrf_token %}
+        <input type="submit" value="内容修正">
+    </form>
+{% else %}
+    <form action="{% url 'thanks-good' object.pk %}">
+        {% csrf_token %}
+        <input type="submit" value="いいね">
+    </form>
+    <br>  
+{% endif %}
+<br>
+
+<!-- 承認待ちのミッションで、経営者か管理者だった場合「承認」ボタンを表示する -->
+{% if profile.get_kubun_display == '経営者' or profile.get_kubun_display == '管理者' %}
+{% if object.approval == 0 %}
+    <table>
+        <form action="{% url 'thanks-approval' object.pk %}" method="POST">
+            {% csrf_token %}
+            <tr><th>クリア報酬EXP</th><td>{{ form.reward_exp }}</td></tr>
+            <tr><td><input type="submit" value="承認"></td></tr>
+        </form>
+    </table>
+    <p>承認待ちで、管理者or経営者 の時</p>
+{% endif %}
+{% endif %} 
 
 {% endblock body %}
     

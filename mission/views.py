@@ -12,7 +12,7 @@ from .models import Mission
 from user.models import Profile
 from . import models
 from django.shortcuts import render
-from exp.forms import ApprovalForm
+from exp.forms import MissionApprovalForm
 
 
 class MissionListView(ListView):
@@ -37,7 +37,7 @@ class MissionDetailView(DetailView, ModelFormMixin):
         context = super(MissionDetailView, self).get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)  # ログインユーザーのプロフィール
         context.update({
-            'form': ApprovalForm(**self.get_form_kwargs()),
+            'form': MissionApprovalForm(**self.get_form_kwargs()),
             'profile' : profile,
         })
         return context
