@@ -1,0 +1,47 @@
+{% extends 'mission/base.html' %}
+
+{% block body %}
+<h1>承認待ちのTHANKS</h1>
+
+<div>
+    <form action="{% url 'thanks-create' %}">
+        <input type="submit" value="New THANKS!!">    
+    </form>
+
+    
+    {% for thanks in thanks_list %}
+    {% if thanks.get_approval_display == '承認待ち' %}
+    <hr>
+    <ul>
+            <b>{{ thanks.giver }}</b>さんから、
+            <b>
+                {% for recipient in thanks.recipients.all %}
+                    {% if forloop.last %}
+                        {{ recipient.user }}さん
+                    {% else %}
+                        {{ recipient.user }}さん、
+                    {% endif %}   
+                {% endfor %} 
+            </b> へ、ありがとう！！ 
+        <p>内容：{{ thanks.content }}</p>
+        <p><a href="{% url 'thanks-detail' thanks.pk %}">詳細</a></p>
+    </ul>
+    <p>時間：{{ thanks.date_posted }}</p>
+    {% endif %}
+    {% endfor %}
+
+</div>
+{% endblock body %}
+        
+<!-- 承認で表示するミッション数が変わるとページネーションがズレる -->
+    <!-- {% if page_obj.has_previous %}
+        <a href="{% url 'mission-waiting' %}">&laquo;first</a>
+        <a href="?page={{page_obj.previous_page_number}}">&laquo;prev</a>
+    {% endif %}
+        <span>[ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ]</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number}}">next&raquo;</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a>
+    {% endif %} -->
+        
+    

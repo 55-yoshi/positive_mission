@@ -53,7 +53,7 @@ class MissionCreateView(LoginRequiredMixin, CreateView):
         # mission = Mission.objects.get(pk=self.pk)
         profile.exp_total -= 3
         # profile.exp_total -= mission.cost_exp
-        profile.create_count += 1
+        profile.mission_create_count += 1
         profile.save()
         return super().form_valid(form)
 

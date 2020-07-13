@@ -46,7 +46,6 @@ class ThanksCreateView(CreateView, ModelFormMixin):
         if self.request.method == 'POST':
             obj = Thanks()
             form = ThanksCreateForm(self.request.POST or None, instance=obj)
-           
             thanks = form.save(commit=False)
             thanks.giver = self.request.user
             thanks.some_field = 'some_value'

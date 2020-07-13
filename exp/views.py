@@ -267,27 +267,26 @@ def ThanksApproval(request, pk):
     except Thanks.DoesNotExist:
         raise Http404
 
+    giver = Profile.objects.get(user=thanks.giver)   # 感謝する人（投稿者）
+    recipient_list = thanks.recipients.all()         # 感謝される人達のプロファイルリスト
+
     if request.method == 'POST':
         thanks.reward_exp = request.POST['reward_exp']
+        # 「承認待ち」から「承認済み」に変更。
         thanks.approval = 1
         # post時間を承認された時間に変更する。
         thanks.date_posted = timezone.now()
         thanks.save()
-        # 「感謝する人」（投稿者）に３expを与える。
-        giver = Profile.objects.get(user=thanks.giver)
-        giver.exp_total += 3
-        giver.save()
-        # フォームで設定された’贈呈exp’を感謝される人達全員に配当する。
-        recipient_list = thanks.recipients.all()   
+        # フォームで設定された’贈呈exp’を感謝される人達全員に配当し、「感謝された回数」プラス１。
         for recipient in recipient_list:
             recipient.exp_total += int(thanks.reward_exp)
+            recipient.thanked_count += 1
             recipient.save()
-
-        # for recipient in object.recipients.all()
-        #     if forloop.last
-        #         recipient.user + 'さん'
-        #     else
-        #         recipient.user + 'さん、'  
+        # 感謝する人（投稿者）に３expを与える。
+        giver.exp_total += 3
+        # 投稿者の「感謝回数」プラス１。
+        giver.thanks_count += 1
+        giver.save()
         messages.success(request, 'この投稿を承認しました！')
         messages.success(request, f'{ thanks.reward_exp }expが贈呈されました。')
         return redirect('thanks-detail', pk)
