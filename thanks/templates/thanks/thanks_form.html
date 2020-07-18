@@ -2,15 +2,30 @@
 
 {% block body %}
     
-<h1>THANKS CREATE</h1>
+<h1>サンクス作成</h1>
 
 <form  action="#"  method='POST'>
     {% csrf_token %}
-    {{ request.user }}さん ➡ {{ form.recipients }}さん
+    <!-- {{ request.user }}さん ➡ {{ form.recipients }}さん -->
+ 
+    
+        
+
+        {% for item in form.recipients %}
+        
+        {% if item.choice_label != request.user.username %}
+            <!-- {{ form.recipients }} -->
+            <P>{{ item }}</P>
+        {% endif %}
+        
+        {% endfor %}
+        
+
     <table>
         <tr><th>content</th><td>{{ form.content }}</td></tr>
         <tr><td></td><td><input type="submit" value="作成"> </td></tr>
     </table>
 </form>
+
 {% endblock body %}
     

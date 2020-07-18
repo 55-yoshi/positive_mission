@@ -6,19 +6,29 @@ from user.models import Profile
 from .forms import ThanksCreateForm 
 from django.views.generic.edit import ModelFormMixin
 from exp.forms import ThanksApprovalForm
+from django.db.models import Q
 
 
 class ThanksListView(ListView):
     model = Thanks
     template_name = 'thanks/thanks_list.html'
     context_object_name = 'thanks_list'
-    ordering = ['-date_posted']
     
     def get_context_data(self, **kwargs):
         context = super(ThanksListView, self).get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile 
         return context
+
+    def get_queryset(self):
+        q_word = self.request.GET.get('query')
+ 
+        if q_word:
+            object_list = Thanks.objects.filter(
+                Q(giver__username__icontains=q_word)|Q(recipients__user__username__icontains=q_word)).order_by('-date_posted')
+        else:
+            object_list = Thanks.objects.all().order_by('-date_posted')
+        return object_list
 
 
 class ThanksDetailView(DetailView, ModelFormMixin):
@@ -41,7 +51,7 @@ class ThanksCreateView(CreateView, ModelFormMixin):
     template_name = 'thanks/thanks_form.html'
 
     def form_valid(self, form):
-        form.instance.giver = self.request.user
+        form.instance.giver = self.request.user      
 
         if self.request.method == 'POST':
             obj = Thanks()
@@ -55,6 +65,13 @@ class ThanksCreateView(CreateView, ModelFormMixin):
         else:
             form = ThanksCreateForm()
         return render(self.request, 'thanks/thanks_form.html', {'form':form})
+
+    def get_context_data(self, **kwargs):
+        context = super(ThanksCreateView, self).get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile 
+        # context['recipients_tt'] = recipients_tt
+        return context
 
 
 class ThanksUpdateView(UpdateView, ModelFormMixin):
@@ -91,8 +108,10 @@ class ThanksWaitingListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ThanksWaitingListView, self).get_context_data(**kwargs)
-        profile = Profile.objects.get(user=self.request.user)  
+        profile = Profile.objects.get(user=self.request.user) 
+        not_approval = Thanks.objects.filter(approval=0) 
         context["profile"] = profile
+        context['not_approval'] = not_approval
         return context
 
 

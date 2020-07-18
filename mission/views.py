@@ -13,6 +13,8 @@ from user.models import Profile
 from . import models
 from django.shortcuts import render
 from exp.forms import MissionApprovalForm
+from django.db.models import Q
+
 
 
 class MissionListView(ListView):
@@ -20,13 +22,23 @@ class MissionListView(ListView):
     template_name = 'mission/home.html'
     context_object_name = 'missions'
     paginate_by = 9
-    ordering = ['-date_posted']
 
     def get_context_data(self, **kwargs):
         context = super(MissionListView, self).get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)  
         context["profile"] = profile
         return context
+
+    def get_queryset(self):
+        q_word = self.request.GET.get('query')
+
+        if q_word:
+            object_list = Mission.objects.filter(
+                Q(author__username__icontains=q_word)|Q(participants_list__user__username__icontains=q_word)).order_by('-date_posted')
+        else:
+            object_list = Mission.objects.all().order_by('-date_posted')
+        return object_list
+
 
 class MissionDetailView(DetailView, ModelFormMixin):
     model = Mission
@@ -94,5 +106,8 @@ class MissionWaitingListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(MissionWaitingListView, self).get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)  
+        not_approval = Mission.objects.filter(approval=0) 
         context["profile"] = profile
+        context['not_approval'] = not_approval
         return context
+

@@ -1,35 +1,39 @@
 {% extends 'mission/base.html' %}
 
 {% block body %}
-<h1>承認待ちのTHANKS</h1>
 
+<h1>承認待ちのサンクス</h1>
 <div>
-    <form action="{% url 'thanks-create' %}">
-        <input type="submit" value="New THANKS!!">    
-    </form>
-
+    
+    
+    <h3><a href="{% url 'mission-waiting' %}">承認待ちのミッション</a> / 承認待ちのサンクス</h3>
     
     {% for thanks in thanks_list %}
-    {% if thanks.get_approval_display == '承認待ち' %}
-    <hr>
-    <ul>
-            <b>{{ thanks.giver }}</b>さんから、
-            <b>
+        {% if thanks.get_approval_display == '承認待ち' %}
+            <hr>
+            <ul>
+                <b>{{ thanks.giver }}</b>さんから、
+                <b>
                 {% for recipient in thanks.recipients.all %}
                     {% if forloop.last %}
                         {{ recipient.user }}さん
                     {% else %}
                         {{ recipient.user }}さん、
-                    {% endif %}   
+                    {% endif %}                       
                 {% endfor %} 
-            </b> へ、ありがとう！！ 
-        <p>内容：{{ thanks.content }}</p>
-        <p><a href="{% url 'thanks-detail' thanks.pk %}">詳細</a></p>
-    </ul>
-    <p>時間：{{ thanks.date_posted }}</p>
-    {% endif %}
+                </b> へ、ありがとう！！ 
+                <p>内容：{{ thanks.content }}</p>
+                <p><a href="{% url 'thanks-detail' thanks.pk %}">詳細</a></p>
+            </ul>
+            <p>時間：{{ thanks.date_posted }}</p>            
+        {% endif %}  
     {% endfor %}
-
+    
+    {% if not not_approval %}
+        <hr>
+        <p>現在、承認待ちのサンクスはありません。</p>
+    {% endif %}
+        
 </div>
 {% endblock body %}
         

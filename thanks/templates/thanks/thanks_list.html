@@ -2,10 +2,15 @@
 
 {% block body %}
     
-<h1>ありがとうリスト</h1>
+<h1>サンクス一覧</h1>
 <br>
 <form action="{% url 'thanks-create' %}">
-    <input type="submit" value="New THANKS!!">
+    <input type="submit" value="New THANKS">
+</form>
+
+<form action="" method="get">
+    <input name="query" value="{{ request.GET.query }}" type="text">
+    <button type="submit">検索する</button>
 </form>
 
 {% for thanks in thanks_list %}

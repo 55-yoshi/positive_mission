@@ -1,15 +1,12 @@
 {% extends 'mission/base.html' %}
 
 {% block body %}
+            
 <h1>承認待ちのミッション</h1>
 
 <div>
+    <h3>承認待ちのミッション / <a href="{% url 'thanks-waiting' %}">承認待ちのサンクス</a></h3>
 
-    <form action="{% url 'mission-create' %}">
-        <button type="submit">New Mission</button>
-    </form>
-
-    
     {% for mission in missions %}
         {% if mission.get_approval_display == '承認待ち' %}
             <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
@@ -24,6 +21,12 @@
             <hr>
         {% endif %}
     {% endfor %}
+
+    {% if not not_approval %}
+        <hr>
+        <p>現在、承認待ちのミッションはありません。</p>
+    {% endif %}
+        
     
 <!-- 承認で表示するミッション数が変わるとページネーションがズレる -->
     <!-- {% if page_obj.has_previous %}
