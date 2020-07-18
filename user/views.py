@@ -78,3 +78,15 @@ def management(request):
         }
 
     return render(request, 'user/management.html', contents)
+
+def Reset(request):
+    for a in Profile.objects.all():
+        a.exp_total = 0
+        a.mission_create_count = 0
+        a.join_count = 0
+        a.my_success_count = 0
+        a.team_success_count = 0
+        a.thanks_count = 0
+        a.thanked_count = 0
+        a.save()
+    return redirect('management')

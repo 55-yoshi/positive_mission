@@ -19,6 +19,10 @@
     </tr>  
     {% endfor %} 
 </table>
+<form action="{% url 'reset' %}"> 
+    {% csrf_token %}
+    <input type="submit" value="リセット">
+</form>
 {% endblock body %}
     
 
