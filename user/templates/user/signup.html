@@ -10,22 +10,22 @@
     <a href="{% url 'expmain' %}">exp Main</a>
     <a>&emsp;</a>
     {% if user.is_authenticated %}
-    <a href="{% url 'logout' %}">Log Out</a>
+    <a href="{% url 'logout' %}">ログアウト</a>
     <a>&emsp;</a>
     {% else %}
-    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'login' %}">ログイン</a>
     <a>&emsp;</a>
-    <a href="{% url 'signup' %}">Sign Up</a>
+    <a href="{% url 'signup' %}">アカウント作成</a>
     {% endif %}
 
 
-    <h1>exp - signupフォーム</h1>
+    <h1>アカウント作成</h1>
     <form method='POST' role="form" action="" class="login-form">
         {% csrf_token %}
         {{ user_form.as_p }}
         <hr>
         {{ profile_form.as_p }}
-        <button type="submit" class="btn">Sign me up!</button>
+        <button type="submit" class="btn">決定する</button>
     </form>
 
 </body>

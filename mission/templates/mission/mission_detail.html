@@ -11,6 +11,7 @@
     <p>クリア報酬EXP：<b>{{ object.success_exp}}</b>exp</p>
     <p>達成状況：<b>{{ object.get_mission_flg_display }}</b></p>
     <p>いいね！：<b>{{ object.good_count}}</b></p>
+    <p>参加人数制限：<b>{{ object.participants_limit }}</b>人</p>
     <p>参加人数：<b>{{ object.participants }}</b>人</p>
     {% if object.participants > 0 %}
     <p>参加者：<b>
@@ -42,8 +43,10 @@
         {% csrf_token %}
         {% if profile in mission.participants_list.all %}
             <input type="submit" value="脱退">
-        {% else %}
+        {% elif mission.participants_limit > mission.participants %}
             <input type="submit" value="参加">
+        {% else %}
+            <p>参加者は定員に達しました。</p>
         {% endif %}      
     </form>
 {% endif %}

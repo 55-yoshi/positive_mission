@@ -149,6 +149,9 @@ def MissionJoin(request, pk):
                 mission.save()
                 messages.success(request, 'このMissionから脱退しました。')
                 return redirect('mission-detail', pk)
+    elif mission.participants >= mission.participants_limit:
+        messages.success(request, 'このミッションは既に定員に達しています。')
+        return redirect('mission-detail', pk)
     else:
         mission.participants += 1
         mission.save()

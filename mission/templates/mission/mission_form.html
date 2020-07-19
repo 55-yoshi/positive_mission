@@ -10,8 +10,9 @@
     <table>
         <form method='POST' role="form" action="#">
             {% csrf_token %}
-            <tr><th>タイトル：</th><td>{{ form.title }}</td></tr>
-            <tr><th>内容：</th><td>{{ form.content }}</td></tr>
+            <tr><th>タイトル</th><td>{{ form.title }}</td></tr>
+            <tr><th>内容</th><td>{{ form.content }}</td></tr>
+            <tr><th>参加人数制限</th><td>{{ form.participants_limit }}人</td></tr>
             <tr><th></th><td><input type="submit" value="作成"></td></tr>
         </form>
     </table>

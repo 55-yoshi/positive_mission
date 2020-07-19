@@ -57,7 +57,7 @@ class MissionDetailView(DetailView, ModelFormMixin):
 
 class MissionCreateView(LoginRequiredMixin, CreateView):
     model = Mission
-    fields = ['title', 'content',]
+    fields = ['title', 'content', 'participants_limit']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -73,7 +73,7 @@ class MissionCreateView(LoginRequiredMixin, CreateView):
 
 class MissionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Mission
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'participants_limit']
 
     def form_valid(self, form):
         form.instance.author = self.request.user

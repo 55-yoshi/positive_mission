@@ -22,9 +22,11 @@ class Mission(models.Model):
     success_exp = models.IntegerField(default=10)                        # クリア報酬ポイント
     good_count = models.IntegerField(default=0)                          # いいね数
     participants = models.IntegerField(default=0)                        # 参加者数
+    participants_limit = models.IntegerField(default=0)                  # 参加人数制限
     participants_list_text = models.CharField(max_length=200, default='')# 参加者リスト(文字列で保存)
     participants_list = models.ManyToManyField(Profile)                  # 参加者リスト(他対他)
     approval = models.IntegerField(choices=EXAMPLE_APPROVAL, default=0)  # 承認状況
+    
 
     def __str__(self):
         return self.title

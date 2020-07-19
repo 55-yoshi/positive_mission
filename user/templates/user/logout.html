@@ -10,12 +10,12 @@
     <a href="{% url 'expmain' %}">exp Main</a>
     <a>&emsp;</a>
     {% if user.is_authenticated %}
-    <a href="{% url 'logout' %}">Log Out</a>
+    <a href="{% url 'logout' %}">ログアウト</a>
     <a>&emsp;</a>
     {% else %}
-    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'login' %}">ログイン</a>
     <a>&emsp;</a>
-    <a href="{% url 'signup' %}">Sign Up</a>
+    <a href="{% url 'signup' %}">アカウント作成</a>
     {% endif %}
 
 
