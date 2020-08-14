@@ -19,7 +19,7 @@ class Mission(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     mission_flg = models.IntegerField(choices=EXAMPLE_FLG, default=0)    # 達成状況(0:実践中 / 1:達成)
     cost_exp = models.IntegerField(default=3)                            # 作成時に消費されるポイント(使えていない)
-    success_exp = models.IntegerField(default=10)                        # クリア報酬ポイント
+    success_exp = models.IntegerField(default=0)                        # クリア報酬ポイント
     good_count = models.IntegerField(default=0)                          # いいね数
     participants = models.IntegerField(default=0)                        # 参加者数
     participants_limit = models.IntegerField(default=0)                  # 参加人数制限

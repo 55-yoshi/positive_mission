@@ -63,11 +63,17 @@ class MissionCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         profile = Profile.objects.get(user=self.request.user)  # 自分のプロフィール
         # mission = Mission.objects.get(pk=self.pk)
-        profile.exp_total -= 3
+        profile.exp_total -= 1
         # profile.exp_total -= mission.cost_exp
         profile.mission_create_count += 1
         profile.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(MissionCreateView, self).get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)  
+        context["profile"] = profile
+        return context
 
             
 
@@ -84,6 +90,13 @@ class MissionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == mission.author:
             return True
         return False
+
+    def get_context_data(self, **kwargs):
+        context = super(MissionUpdateView, self).get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)  
+        context["profile"] = profile
+        return context
+
 
 
 class MissionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

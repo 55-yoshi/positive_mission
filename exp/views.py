@@ -285,11 +285,16 @@ def ThanksApproval(request, pk):
             recipient.exp_total += int(thanks.reward_exp)
             recipient.thanked_count += 1
             recipient.save()
-        # 感謝する人（投稿者）に３expを与える。
-        giver.exp_total += 3
+        # 感謝する人（投稿者）に１expを与える。
+        giver.exp_total += 1
         # 投稿者の「感謝回数」プラス１。
         giver.thanks_count += 1
         giver.save()
-        messages.success(request, 'この投稿を承認しました！')
-        messages.success(request, f'{ thanks.reward_exp }expが贈呈されました。')
+        # messages
+        messages.success(request, 'この投稿を承認しました。')
+        text_message = []
+        for recipient in recipient_list:
+            text_message.append( recipient.user.username + 'さん')
+        messages.success(request, f'{ text_message }に、{ thanks.reward_exp }expが贈呈されました！')
+        messages.success(request, f'投稿者の{ giver.user.username }さんには、１exp！')
         return redirect('thanks-detail', pk)

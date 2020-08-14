@@ -8,32 +8,35 @@
     <h1>マイページ</h1>
 
     {% if user.is_authenticated %}
-    こんにちは<b>{{ profile.user.username }}さん</b>。
-    <br>
-    {% if profile %}
-    区分（経営者/従業員）：{{ profile.get_kubun_display }}
-    <br>
-    経験値：{{ profile.exp_total }}
-    <br>
-    <br>
-    <br>
-    
+        こんにちは<b>{{ profile.user.username }}さん</b>。
+        <br>
+        区分（経営者/従業員）：{{ profile.get_kubun_display }}
+        <br>
+        経験値：{{ profile.exp_total }}
+        <br>
+        <br>
+        <br>
+        
 
-    <b>【参加中/参加したミッション】 ／</b><a href="{% url 'expmain' %}"> 【自分で作成したミッション】</a>
-    <hr>
-    {% for item in join_missions reversed  %}
-    <h1><a href="{% url 'mission-detail' item.id %}">{{ item.title }}</a></h1>
-    <li>実施状況：<b>{{ item.get_mission_flg_display }}</b></li>
-    <li>いいね数：{{ item.good_count }}</li>
-    <li>参加人数：{{ item.participants }}</li>
-    <hr>
-    {% endfor %}
-    
+        <b>【参加中/参加したミッション】 ／</b><a href="{% url 'expmain' %}"> 【自分で作成したミッション】</a>
+        
+        {% for mission in join_missions reversed  %}
+            <hr>
+            <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
+            <ul>
+                <li>投稿時間：<b>{{ mission.date_posted }}</b></li>
+                <li>依頼者：<b>{{ mission.author }}</b></li>
+                <li>達成状況：<b>{{ mission.get_mission_flg_display }}</b></li>
+                <li>達成報酬EXP：<b>{{ mission.success_exp }}</b>exp</li>
+                <li>いいね数：<b>{{ mission.good_count }}</b></li>
+                <li>参加人数：<b>{{ mission.participants }}</b>/{{ mission.participants_limit }} 人</li>
+            </ul>
+        {% empty %}
+            <hr>
+            <p>データがありません。</p>
+        {% endfor %}
     {% else %}
-    <p>データがありません。</p>
-    {% endif %}
-    {% else %}
-    <h3>loginしてください。</h3>
+        <h3>loginしてください。</h3>
     {% endif %}
     
 {% endblock body %}

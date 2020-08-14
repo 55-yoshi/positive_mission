@@ -30,7 +30,7 @@
         {% csrf_token %}
         <input type="submit" value="内容修正">
     </form>
-{% else %}
+{% elif request.user != object.giver %}
     <form action="{% url 'thanks-good' object.pk %}">
         {% csrf_token %}
         <input type="submit" value="いいね">

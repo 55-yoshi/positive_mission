@@ -36,7 +36,7 @@
     {% if user.is_authenticated %}
     こんにちは<b>{{ profile.user.username }}さん</b>。
     <br>
-    {% if profile %}
+    <!-- {% if profile %} -->
     区分（経営者/従業員/管理者）：<b>{{ profile.get_kubun_display }}</b>
     <br>
     経験値：<b>{{ profile.exp_total }}</b> exp
@@ -46,19 +46,26 @@
     
 
     <b>【自分で作成したミッション】 ／</b><a href="{% url 'join-list' %}">【参加中/参加したミッション】</a>
-    <hr>
+
     {% for mission in my_missions reversed %}
-    <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
-    <li>承認状況：<b>{{ mission.get_approval_display }}</b></li>
-    <li>実施状況：<b>{{ mission.get_mission_flg_display }}</b></li>
-    <li>いいね数：<b>{{ mission.good_count }}</b></li>
-    <li>参加人数：<b>{{ mission.participants }}</b>人</li>
     <hr>
+    <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
+    <ul>
+        <li>投稿時間：<b>{{ mission.date_posted }}</b></li>
+        <li>依頼者：<b>{{ mission.author }}</b></li>
+        <li>達成状況：<b>{{ mission.get_mission_flg_display }}</b></li>
+        <li>達成報酬EXP：<b>{{ mission.success_exp }}</b>exp</li>
+        <li>いいね数：<b>{{ mission.good_count }}</b></li>
+        <li>参加人数：<b>{{ mission.participants }}</b>/{{ mission.participants_limit }} 人</li>
+    </ul>
+    {% empty %}
+        <hr>
+        <p>データがありません。</p>
     {% endfor %}
     <br>
-    {% else %}
+    <!-- {% else %}
     <p>データがありません。</p>
-    {% endif %}
+    {% endif %} -->
     {% else %}
     <h3>loginしてください。</h3>
     {% endif %}
