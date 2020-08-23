@@ -25,7 +25,7 @@ SECRET_KEY = '6i-zwxtywm-iiqhb=h44s)g1*cntsk3%m$3gcfi)1kux3am2gd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -77,12 +77,27 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if os.getenv('GAE_APPLICATION', None):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'positiveappdb',
+            'USER': 'positiveappuser',
+            'PASSWORD': 'sa281109',
+            'HOST': '/cloudsql/positiveapp-287301:us-central1:positiveapp',
+        }
     }
-}
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    
+STATIC_URL = '/static/'
 
 
 # Password validation
@@ -121,8 +136,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 
 # ログインが必要なページに認証していないユーザーがアクセスした場合にリダイレクトするURLを指定
 LOGIN_URL = 'login'
