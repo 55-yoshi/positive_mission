@@ -3,7 +3,9 @@
 {% block body %}
     
 <h1>サンクス作成</h1>
-
+<hr>
+<br>
+<p>◆感謝を贈る方</p>
 <form  action="#"  method='POST'>
     {% csrf_token %}
     <!-- {{ request.user }}さん ➡ {{ form.recipients }}さん -->
@@ -15,16 +17,25 @@
         
         {% if item.choice_label != request.user.username %}
             <!-- {{ form.recipients }} -->
-            <P>{{ item }}</P>
+            {{ item }}<a>&emsp;</a>
+            <!-- <P>{{ item }}</P> -->
         {% endif %}
         
         {% endfor %}
         
 
-    <table>
+    <!-- <table>
         <tr><th>content</th><td>{{ form.content }}</td></tr>
-        <tr><td></td><td><input type="submit" value="作成"> </td></tr>
     </table>
+  <button type="submit" class="btn btn-primary">提出</button> -->
+    <br>
+    <br>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">内容</label>
+        <p>{{ form.content }}</p>
+    </div>
+    <button type="submit" class="btn btn-primary">提出</button>
+
 </form>
 
 {% endblock body %}

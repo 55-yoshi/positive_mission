@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import ProfileForm, UserCreateForm
 from .models import Profile
-from exp.views import total_exp
 from mission.models import Mission
 
 def expmain(request):
@@ -15,7 +14,6 @@ def expmain(request):
 
         contents = {
             "profile": profile,
-            "total_exp": total_exp,
             "my_missions": my_missions,
             "join_missions": join_missions,
         }
@@ -33,7 +31,6 @@ def join_list(request):
 
         contents = {
             "profile": profile,
-            "total_exp": total_exp,
             "my_missions": my_missions,
             "join_missions": join_missions,
         }

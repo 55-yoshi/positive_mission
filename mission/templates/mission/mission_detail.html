@@ -24,6 +24,8 @@
             {% endif %}
         {% endfor %}
     </b></p>
+    {% else %}
+    <p>参加者：なし</p>
     {% endif %}
     
     {% if messages %}      
@@ -37,15 +39,15 @@
 {% if object.author != request.user and object.mission_flg == 0 %}
     <form action="{% url 'mission-good' object.pk %}">
         {% csrf_token %}
-        <input type="submit" value="いいね">
+        <button type="submit" class="btn btn-danger">いいね</button>
     </form>
     <br>     
     <form action="{% url 'mission-join' object.pk %}">
         {% csrf_token %}
         {% if profile in mission.participants_list.all %}
-            <input type="submit" value="脱退">
+            <button type="submit" class="btn btn-dark">脱退</button>
         {% elif mission.participants_limit > mission.participants %}
-            <input type="submit" value="参加">
+            <button type="submit" class="btn btn-primary">参加</button>
         {% else %}
             <p>参加者は定員に達しました。</p>
         {% endif %}      
@@ -58,12 +60,13 @@
     {% if object.approval == 1 %}
     <form action="{% url 'mission-success' object.pk %}">
         {% csrf_token %}
-        <input type="submit" value="ミッションクリア">   
+        <button type="submit" class="btn btn-danger">ミッションクリア</button>
     </form>
+    <br>
     {% endif %}     
     <form action="{% url 'mission-update' object.pk %}">
         {% csrf_token %}
-        <input type="submit" value="Mission内容修正">
+        <button type="submit" class="btn btn-secondary">内容修正</button>
     </form>
 {% endif %}
 <br>
@@ -75,7 +78,7 @@
         <form action="{% url 'mission-approval' object.pk %}" method="POST">
             {% csrf_token %}
             <tr><th>クリア報酬EXP</th><td>{{ form.success_exp }}</td></tr>
-            <tr><td><input type="submit" value="承認"></td></tr>
+            <tr><td><button type="submit" class="btn btn-info">承認</button></td></tr>
         </form>
     </table>
 {% endif %}

@@ -9,7 +9,7 @@
 
     {% for mission in missions %}
         {% if mission.get_approval_display == '承認待ち' %}
-            <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
+            <!-- <h1><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h1>
             <ul>
                 <li>依頼者：<b>{{ mission.author }}</b></li>
                 <li>達成状況：<b>{{ mission.get_mission_flg_display }}</b></li>
@@ -18,7 +18,21 @@
                 <li>現在いいね数：<b>{{ mission.good_count }}</b></li>
                 <li>参加者数：<b>{{ mission.participants }}</b>人</li>
             </ul>
+            <hr> -->
             <hr>
+            <div class='container'>
+                <div class="alert alert-success" role="alert">
+                    
+                    <h2 class="text-left"><a href="{% url 'mission-detail' mission.id %}">{{ mission.title }}</a></h2>
+                    <p class="text-left">依頼者：<b>{{ mission.author }}</b></p>
+                    <p class="text-left">達成状況：<b>{{ mission.get_mission_flg_display }}</b></p>
+                    <p class="text-left">達成報酬EXP：<b>{{ mission.success_exp }}</b>exp</p>
+                    <p class="text-left">いいね数：<b>{{ mission.good_count }}</b></p>
+                    <p class="text-left">参加人数：<b>{{ mission.participants }}</b>/{{ mission.participants_limit }} 人</p>
+                    <p class="text-right"><b>{{ mission.date_posted }}</b></p>
+                
+                </div>
+            </div>
         {% endif %}
     {% endfor %}
 

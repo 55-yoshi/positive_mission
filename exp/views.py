@@ -4,54 +4,9 @@ from mission.models import Mission, Good_mission
 from thanks.models import Thanks, Good_thanks
 from user.models import Profile 
 from django.contrib import messages
-# from .forms import ApprovalForm
 from django.http import HttpResponse
 from django.http import Http404
 from django.utils import timezone
-
-
-# expを合計する機能
-def total_exp():
-    #①「初期値or確定済(exp)」をProfile.exp_totalから取得する。
-    #②依頼したミッション（クリアしていない）の「獲得exp（use_exp）」の合計を取得する。
-    #　※依頼者は、「獲得exp（use_exp）」をインセンティブとして提供することで良かったでしょうか。
-    #③依頼したミッション（クリアしていない）の「いいね（add_exp）」の合計を取得する。
-    #④参加したミッション（クリアしていない）の「獲得exp（use_exp）/参加人数」の合計を取得する。
-    #　※参加者は、獲得exp（use_exp）を参加人数で山分けで良かったでしょうか。
-    #⑤合計計算「①-②+③+④」とする。
-    #注意：ミッションがクリアしたときに、Profile.exp_totalを更新する仕様で考えています。
-    return
-
-
-# いいねのexp加算する機能
-# ※以下のMissionLike()で行っているので不要かと思います。
-def good_count():
-    return
-
-
-# ミッション作成時にuse_expを消費する機能
-# ※ミッションがクリアしたときに、Profile.exp_totalを更新する仕様で考えています。
-#   need_gain()の「１、依頼者」の処理が該当します。
-def need_exp():
-    return
-
-
-# ミッションクリア時にuse_expを配分する機能
-def need_gain():
-    #１、依頼者
-    #  ①依頼者の「初期値or確定済(exp)」をProfile.exp_totalから取得する。
-    #  ②ミッションの「獲得exp（use_exp）」を取得する。
-    #  ③更新expを算出（①-②）する。
-    #  ④依頼者の「初期値or確定済(exp)」を更新expで更新する。
-    #２、参加者
-    #  ①ミッションの参加者数をProfile.missionから取得する。
-    #  ②ミッションの「獲得exp（use_exp）」を取得する。
-    #  ③配分expを算出（②/①）する。
-    #  ③ミッションの参加者数分以下の処理を繰り返す。
-    #    ③.1 参加者の「初期値or確定済(exp)」をProfile.exp_totalから取得する。
-    #    ③.2 更新expを算出（③+(③.1)）する。
-    #    ③.3 参加者の「初期値or確定済(exp)」を更新expで更新する。
-    return
 
 
 # 投稿されたミッションに対していいねボタンが押されたときの動作
@@ -184,7 +139,17 @@ def MissionSuccess(request, pk):
         item.exp_total += mission.success_exp
         item.team_success_count += 1
         item.save()
+
+    author_exp = mission.success_exp + mission.participants
+    messages.success(request, f'投稿者：{ author_profile.user }さんに、（クリア報酬{ mission.success_exp }EXP）＋（参加人数{ mission.participants }EXP）。合わせて{ author_exp }EXPが配当されました!!')
+
+    text = []
+    for participants in mission.participants_list.all():
+        text.append( participants.user.username + 'さん')
+    text_message = ','.join(text)
+    messages.success(request, f'参加者：{ text_message } に、クリア報酬{ mission.success_exp }EXPが配当されました!!')
     return redirect('mission-detail', pk)
+
 
     # 文字列型
     # s = mission.participants_list_text
@@ -292,9 +257,11 @@ def ThanksApproval(request, pk):
         giver.save()
         # messages
         messages.success(request, 'この投稿を承認しました。')
-        text_message = []
+        text = []
         for recipient in recipient_list:
-            text_message.append( recipient.user.username + 'さん')
-        messages.success(request, f'{ text_message }に、{ thanks.reward_exp }expが贈呈されました！')
+            text.append( recipient.user.username + 'さん')
+        text_message = ','.join(text)
+        messages.success(request, f'{ text_message } に、{ thanks.reward_exp }expが贈呈されました!!')
+
         messages.success(request, f'投稿者の{ giver.user.username }さんには、１exp！')
         return redirect('thanks-detail', pk)

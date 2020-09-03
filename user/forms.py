@@ -2,9 +2,15 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
+from django.forms import EmailField
+
+
+# class UserCreateForm(UserCreationForm):
+#     pass
+
 
 class UserCreateForm(UserCreationForm):
-    pass
+    email = EmailField(label='メールアドレス', required=True, help_text='Required.')
 
 
 class ProfileForm(forms.ModelForm):

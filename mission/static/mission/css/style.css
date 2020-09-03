@@ -1,5 +1,5 @@
 table {
-    margin: 10px;
+    margin: 20px;
     font-size: 14px;
 }
 table tr th{
@@ -9,34 +9,11 @@ table tr th{
     border-width: 2px;
 }
 
-
-.container { 
-    width: 330px;
-    margin: 20px auto;
-}
-
-.container ul{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.container li {
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    border-radius: 5px;
-    margin: 0 5px 10px;
-}
-
-.container div {
+form.search {
     text-align: right;
-    padding: 5px;
-    font-size: 13px;
-    font-weight: bold;
 }
+
+.main {
+    margin: 20px;
+}
+

@@ -5,6 +5,7 @@
 
 <div>
     <h1>ミッション作成</h1>
+    <hr>
     
     {% if profile.exp_total <= 0 %}
         <p>※所有EXPが足りません</p>
@@ -13,7 +14,7 @@
         
 </div>
 {% if profile.exp_total > 0 %}
-    <div>
+    <!-- <div>
         <table>
             <form method='POST' role="form" action="#">
                 {% csrf_token %}
@@ -23,7 +24,26 @@
                 <tr><th></th><td><input type="submit" value="作成"></td></tr>
             </form>
         </table>
-    </div>
+    </div> -->
+
+    <form method='POST' role="form" action="#">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">タイトル</label>
+            <p>{{ form.title }}</p>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">内容</label>
+            <p>{{ form.content }}</p>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">参加人数制限</label>
+            <p>{{ form.participants_limit }}人</p>
+        </div>
+        <button type="submit" class="btn btn-primary">提出</button>
+    </form>
+
+
 {% endif %}
 
 {% endblock body %}
